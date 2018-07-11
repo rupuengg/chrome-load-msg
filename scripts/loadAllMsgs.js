@@ -23,7 +23,7 @@ function decrypt_msg(item){
   if(content.length > 0 && !item.getAttribute('conv')){
     var content = content[0];
 
-    content.innerHTML = secureMessage(content.innerHTML);
+    content.innerHTML = deSecureMessage(content.innerHTML);
     item.setAttribute('conv', '1');
   }
 }
