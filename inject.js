@@ -7,3 +7,4 @@ function addScript(src){
 
 // Add Script for load all messages
 addScript(chrome.extension.getURL('loadAllMsgs.js'));
+addScript(chrome.extension.getURL('crypto.js'));

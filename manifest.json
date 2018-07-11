@@ -10,7 +10,7 @@
     "scripts": ["background.js"],
     "persistent": false
   },
-  "web_accessible_resources": ["loadAllMsgs.js"],
+  "web_accessible_resources": ["loadAllMsgs.js", "crypto.js"],
   "content_scripts": [
     {
       "matches": ["https://*.slack.com/*"],

@@ -70,15 +70,3 @@ var interval1 = setInterval(function(){
   }
   menu_list = document.querySelectorAll('.client_channels_list_container div[role="listitem"]');
 }, 50);
-
-// Encrypt Message
-function secureMessage(msg){
-  var encryptedAES = (msg + "a657s65da5sd");
-  return encryptedAES;
-}
-
-// Decrypt Message
-function deSecureMessage(encryptMsg){
-  var plaintext = encryptMsg.replace("a657s65da5sd","");
-  return plaintext;
-}
