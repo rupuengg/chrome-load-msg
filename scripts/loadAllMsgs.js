@@ -16,6 +16,7 @@ function fetch_all_messages_list(){
   }, 100);
 }
 
+// Process
 function process(){
   // var colls = msg_container.querySelectorAll('div[role="listitem"]');
   if(msg_container.querySelectorAll('div[role="listitem"]').length > 0){
