@@ -1,20 +1,47 @@
 // console.log('-----', 'Start Load Message Script');
-var msg_container, menu_list, chk_height;
+var msg_container, menu_list, chk_height, msg_container_len=0;
 
 // Fetch All Message List Items
 function fetch_all_messages_list(){
   // console.log('-----', 'Get Msg Container Div', msg_container);
 
-  var colls = msg_container.querySelectorAll('div[role="listitem"]');
-  if(colls.length > 0){
+  setInterval(function(){
+    // console.log('Interval', msg_container_len, msg_container.querySelectorAll('div[role="listitem"]').length);
+    if(msg_container.querySelectorAll('div[role="listitem"]').length > 0 && msg_container.querySelectorAll('div[role="listitem"]').length > msg_container_len){
+      // console.log('Change');
+      process(msg_container.querySelectorAll('div[role="listitem"]'));
+    }
+    // var colls = msg_container.querySelectorAll('div[role="listitem"]');
+    msg_container_len = msg_container.querySelectorAll('div[role="listitem"]').length;
+  }, 100);
+}
+
+function process(){
+  // var colls = msg_container.querySelectorAll('div[role="listitem"]');
+  if(msg_container.querySelectorAll('div[role="listitem"]').length > 0){
     chk_height = parseFloat(msg_container.firstChild.style.height);
     // console.log('-----', 'Fetch Message Items List', colls.length);
 
-    for(var i=0;i<colls.length;i++){
-      decrypt_msg(colls[i]);
+    for(var i=0;i<msg_container.querySelectorAll('div[role="listitem"]').length;i++){
+      decrypt_msg(msg_container.querySelectorAll('div[role="listitem"]')[i]);
     }
   }
 }
+
+// Scroll
+// function scrollEvent(){
+//   console.log('scroll');
+//   if(msg_container.querySelectorAll('div[role="listitem"]').length > msg_container_len){
+//     // var t = setInterval(function(){
+//       console.log(msg_container.querySelectorAll('div[role="listitem"]').length, '>', msg_container_len);
+//       if(msg_container.querySelectorAll('div[role="listitem"]').length > msg_container_len){
+//         msg_container_len = msg_container.querySelectorAll('div[role="listitem"]').length;
+//         // clearInterval(t);
+//         fetch_all_messages_list();
+//       }
+//     // }, 10);
+//   }
+// }
 
 // Decrypt Message
 function decrypt_msg(item){
@@ -23,7 +50,8 @@ function decrypt_msg(item){
   if(content.length > 0 && !item.getAttribute('conv')){
     var content = content[0];
 
-    content.innerHTML = deSecureMessage(content.innerHTML);
+    content.innerHTML = secureMessage(content.innerHTML);
+    // content.innerHTML = deSecureMessage(content.innerHTML);
     item.setAttribute('conv', '1');
   }
 }
@@ -57,14 +85,22 @@ var interval = setInterval(function(){
   if(msg_container != null){
     clearInterval(interval);
     fetch_all_messages_list();
+
+    // var dv = msg_container.firstChild;
+    // if(window.addEventListener){
+    //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
+    // }else{
+    //   if(window.attachEvent){
+    //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
+    //   }
+    // }
   }
-  menu_list = document.querySelectorAll('.client_channels_list_container div[role="listitem"]');
   msg_container = document.querySelector('#messages_container .c-scrollbar__child');
 }, 50);
 
 // Setinterval for Menu Item
 var interval1 = setInterval(function(){
-  if(menu_list.length > 0){
+  if(menu_list != null){
     clearInterval(interval1);
     bind_event_to_each_menu_item();
   }
