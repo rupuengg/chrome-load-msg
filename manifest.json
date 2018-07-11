@@ -7,18 +7,20 @@
     "default_icon": "images/get_started16.png"
   },
   "background": {
-    "scripts": ["background.js"],
+    "scripts": ["scripts/background.js"],
     "persistent": false
   },
-  "web_accessible_resources": ["loadAllMsgs.js", "crypto.js"],
+  "web_accessible_resources": [
+    "scripts/loadAllMsgs.js",
+    "scripts/crypto.js"
+  ],
   "content_scripts": [
     {
       "matches": ["https://*.slack.com/*"],
-      "js": ["inject.js"],
+      "js": ["scripts/inject.js"],
       "run_at": "document_start",
       "all_frames": true
     }
   ],
-  "options_page": "options.html",
   "manifest_version": 2
 }
