@@ -1,0 +1,24 @@
+{
+  "name": "First Extension",
+  "description": "This is my first Extension",
+  "version": "1.0",
+  "permissions": ["activeTab", "declarativeContent", "storage"],
+  "browser_action": {
+    "default_icon": "images/get_started16.png"
+  },
+  "background": {
+    "scripts": ["background.js"],
+    "persistent": false
+  },
+  "web_accessible_resources": ["loadAllMsgs.js"],
+  "content_scripts": [
+    {
+      "matches": ["https://*.slack.com/*"],
+      "js": ["inject.js"],
+      "run_at": "document_start",
+      "all_frames": true
+    }
+  ],
+  "options_page": "options.html",
+  "manifest_version": 2
+}
