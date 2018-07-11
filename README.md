@@ -5,5 +5,7 @@
 ###### Goto Extensions in chrome
 
 > Click on Tools icon in chrome
+
 > Goto More tools options
+
 > Click on Extensions
