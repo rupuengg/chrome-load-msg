@@ -1,23 +1,28 @@
 {
-  "name": "First Extension",
-  "description": "This is my first Extension",
-  "version": "1.0",
+  "name": "StanExt",
+  "description": "",
+  "version": "0.3.180620",
   "permissions": ["activeTab", "declarativeContent", "storage"],
   "browser_action": {
-    "default_icon": "images/get_started16.png"
+    "default_icon": "images/icon.png",
+    "default_popup": "popup.html"
   },
   "background": {
     "scripts": ["scripts/background.js"],
     "persistent": false
   },
   "web_accessible_resources": [
+    "scripts/map.js",
+    "scripts/mimic.js",
     "scripts/loadAllMsgs.js",
     "scripts/crypto.js"
   ],
   "content_scripts": [
     {
       "matches": ["https://*.slack.com/*"],
-      "js": ["scripts/inject.js"],
+      "js": [
+        "scripts/inject.js"
+      ],
       "run_at": "document_start",
       "all_frames": true
     }

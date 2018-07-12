@@ -6,5 +6,7 @@ function addScript(src){
 }
 
 // Add Script for load all messages
+addScript(chrome.extension.getURL('scripts/map.js'));
+addScript(chrome.extension.getURL('scripts/mimic.js'));
 addScript(chrome.extension.getURL('scripts/loadAllMsgs.js'));
 addScript(chrome.extension.getURL('scripts/crypto.js'));
