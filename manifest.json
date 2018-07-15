@@ -2,8 +2,16 @@
   "name": "StanExt",
   "description": "",
   "version": "0.3.180620",
-  "permissions": ["activeTab", "declarativeContent", "storage"],
-  "browser_action": {
+  "permissions": [
+    "activeTab",
+    "declarativeContent",
+    "storage"
+  ],
+  /*"browser_action": {
+    "default_icon": "images/icon.png",
+    "default_popup": "popup.html"
+  },*/
+  "page_action": {
     "default_icon": "images/icon.png",
     "default_popup": "popup.html"
   },
@@ -19,7 +27,9 @@
   ],
   "content_scripts": [
     {
-      "matches": ["https://*.slack.com/*"],
+      "matches": [
+        "https://*.slack.com/*"
+      ],
       "js": [
         "scripts/inject.js"
       ],

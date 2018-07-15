@@ -1,17 +1,112 @@
 <!DOCTYPE html>
-  <html>
-    <head>
-      <style>
-        button {
-          height: 30px;
-          width: 30px;
-          outline: none;
-        }
-      </style>
-    </head>
-    <body>
-      <h1>Hello Extensions</h1>
-      <button id="changeColor"></button>
-      <script src="popup.js"></script>
-    </body>
-  </html>
+<html>
+	<head>
+		<script src="./scripts/vendors/jquery-3.3.1.min.js"></script>
+		<script src ="popup.js"></script>
+		<style>
+			html,body{min-width:500px;margin:0px;padding:0px;background-color:#78ada8;border:1px solid #91a09f;font-size:13px;}
+			h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
+			#maindiv{padding:20px;min-height:350px;}
+			#maindiv > form > h2{display:block;text-align:center;font-size:20px;font-weight:bold;}
+			#maindiv > form > h3{display:block;text-align:center;font-size:14px;font-weight:normal;margin-bottom:10px;}
+			.channel-list{width:100%;background-color:#fff;padding:10px;}
+			.channel-list thead th{background-color:#ccc;}
+			.channel-list thead th p{padding:6px;}
+			.channel-list tbody td p{padding:6px;}
+			.channel-list th{text-align:left;}
+			.channel-list tr th:first-child{width:30%;}
+			.channel-list tr td:first-child p{font-weight:bold !important;}
+			.channel-list tr th:last-child{width:20%;}
+			#table{
+				width: 100%;
+				margin-bottom: 40px;
+			}
+			#feedbacklnk
+			{
+				float: right;
+				margin-top:51px;
+			}
+			#createkey{
+				border-radius:6px;
+				height:60%;
+				width:28%;
+				background-color: #1a555e;
+				color: #fdfdfd;
+				margin-top:51px;
+			}
+			#bottomdiv {
+				height:50px;
+			}
+			#dropdown1  {
+				width:118px;
+			}
+			#key3  {
+				width:118px;
+			}
+			.inline {
+				display: inline-block;
+			}
+			.classdiv {
+				width:450px;
+				padding:6px;
+			}
+			.innerclass {
+				padding-left:110px;
+			}
+			#managebtn {
+				padding-left:168px;
+			}
+		</style>
+	</head>
+	<body>
+		<div id='maindiv'>
+			<form id = 'formId' method = 'GET'>
+				<h2 id='h2'>Encrypted Insights</h2>
+				<h3 id='h3'>Manage my Channels</h3>
+
+				<table class="channel-list" cellspacing=0 cellpadding=0>
+					<thead>
+						<tr>
+							<th><p>Channel</p></th>
+							<th><p>Key</p></th>
+							<th><p>Manage</p></th>
+						</tr>
+					</thead>
+					<tbody id="tbl-tbody-content">
+					</tbody>
+				</table>
+				<div class='classdiv'>
+					<div class='inline'>Channel</div>
+					<div class='inline innerclass'>Key</div>
+					<div class='inline' id='managebtn'>Manage</div>
+				</div>
+				<div class='classdiv'>
+					<div  class='inline'>a</div>
+					<div id='keydropdown' class='inline innerclass'>
+						<select id='dropdown1'  name='keydropdown'>
+							<option>My First Key</option>
+							<option>My second Key</option>
+						</select>
+					</div>
+					<div id='managekey' class='inline innerclass'>
+						<input type = 'button' id = 'manageKey' value ='Manage Key'/>
+					</div>
+				</div>
+				<div class='classdiv'>
+					<div class='inline'>b</div>
+					<div class='inline innerclass'><select><option>Some other key</option></select></div>
+					<div class='inline innerclass'><button id='sharebtn' >Share</button></div>
+				</div>
+				<div class='classdiv'>
+					<div class='inline'>c</div>
+					<div class='inline innerclass'><select id='key3'><option>Key #3</option></select></div>
+					<div class='inline innerclass'><button id='sharebtn2'>Share</button></div>
+				</div>
+				<div id='bottomdiv'>
+				  <input type='submit' name='Create New Key' Value='Create New Key' id='createkey'></button>
+				  <a id='feedbacklnk' href="form2.html">Send Us Feedback</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

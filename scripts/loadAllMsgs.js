@@ -4,7 +4,7 @@ var msg_container,
     chk_height,
     msg_container_len=0,
     selector = 'div[role="listitem"]:not(.s-msg__decrypto)',
-    sidebar_selector_for_channel = '.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="channel"]',
+    sidebar_selector_for_channel = '.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="channel"],.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="private"]',
     sidebar_selector_for_im = '.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="im"]';
 
 // Fetch All Message List Items
@@ -135,10 +135,12 @@ var s = {
     s.fetch_channel_list(sidebar_selector_for_channel, 'c');
 
     // Fetch User List
-    s.fetch_channel_list(sidebar_selector_for_im, 'u');
+    s.fetch_channel_list(sidebar_selector_for_im, 'u', 1);
   },
   // Fetch All channel list
-  fetch_channel_list: function(selector, type){
+  fetch_channel_list: function(selector, type, is_send){
+    if(!is_send) var is_send = 0;
+
     // console.log('Start');
     var list = document.querySelectorAll(selector);
     // console.log(list.length, list);
@@ -151,13 +153,42 @@ var s = {
       var a = {
         id: item.attributes['data-qa-channel-sidebar-channel-id'].nodeValue,
         title: item.querySelector('span').innerText,
-        selected: item.className.indexOf("p-channel_sidebar__channel--selected") >= 0 ? true : false
+        selected: item.className.indexOf("p-channel_sidebar__channel--selected") >= 0 ? true : false,
+        type: type
       };
 
       s.all_list.push(a);
       if(type == 'c') s.channel_list.push(a);
       if(type == 'u') s.user_list.push(a);
     }
+
+    if(is_send){
+      console.log('Send Channel List to Content Script', chrome);
+
+      // chrome.runtime.sendMessage(s.channel_list);
+      if(s.channel_list.length > 0){
+        window.postMessage({
+          type: 'channel',
+          list: s.channel_list
+        }, "*");
+      }
+    }
     // console.log(s);
   }
-}
+};
+
+// chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
+//   alert('Hello2' + req.action);
+//   // chrome.runtime.sendMessage(req);
+// });
+
+// window.addEventListener('message', function(event){
+// 	// We only accept messages from ourselves
+// 	console.log('-----', 'Event', event);
+// 	if(event.source != window) return;
+//
+// 	if(event.data.type && (event.data.type == 'channel_and_user_list')){
+// 		console.log('-----', 'Data', event.data.list);
+// 		// port.postMessage(event.data.text);
+// 	}
+// }, false);
