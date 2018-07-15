@@ -54,6 +54,7 @@ chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
       sendResponse(pass_data);
     });
   });
+  return true;
 });
 
 // chrome.tabs.onSelectionChanged.addListener(function(tabId, selectInfo){
