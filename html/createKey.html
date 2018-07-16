@@ -2,7 +2,8 @@
 <html>
 	<head>
 		<script src="../scripts/vendors/jquery-3.3.1.min.js"></script>
-		<script src ="./createKey.js"></script>
+		<script src="./store.js"></script>
+		<script src="./createKey.js"></script>
 		<link rel="stylesheet" href="./style.css" />
 	</head>
 	<body>
@@ -17,15 +18,24 @@
 
 				<div class="feedback-box">
 					<div class="form-box">
-						<label for="keyinput">Key</label>
+						<label for="keyinput">Channel</label>
 						<div class="form-field-box">
-							<input id='keyinput' type="textbox" />
+							<select id="sel_channels" class="" name="">
+							</select>
+							<span class="error">Channel is mandatory.</span>
+						</div>
+					</div>
+					<div class="form-box">
+						<label for="keyinput">Generated Key</label>
+						<div class="form-field-box">
+							<input id="keyinput" type="textbox" disabled="disabled" />
 						</div>
 					</div>
 					<div class="form-box">
 						<label for="alias">Alias</label>
 						<div class="form-field-box">
 							<input id="alias" type="textbox" />
+							<span class="error">Alias is mandatory.</span>
 						</div>
 					</div>
 					<div class="form-box">
@@ -35,8 +45,14 @@
 						</div>
 					</div>
 					<div class="form-box">
+						<label for="shared_with">
+							<input id="key_activate" type="checkbox" value=1 />
+							Activate
+						</label>
+					</div>
+					<div class="form-box">
 						<div class="form-field-box">
-							<button id='button1'>Create New Key</button>
+							<button id='button1' type="button">Create New Key</button>
 							<a class="feedbacklnk" href="./Feedback.html">Send Us Feedback</a>
 						</div>
 					</div>

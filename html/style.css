@@ -33,4 +33,5 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .feedback-box .form-box label{display:block;padding: 0 0 3px 0;font-size: 13px;}
 .feedback-box .form-box .form-field-box{display:block;}
 .feedback-box .form-box .form-field-box input,.feedback-box .form-box .form-field-box textarea,.feedback-box .form-box .form-field-box select{display:block;width:100%;padding:6px 0;}
+.feedback-box .form-box .form-field-box .error{display:none;color:red;font-size;12px;}
 #button1{height:10%;background-color: #1a555e;color: #fdfdfd;font-size:13px;border:0px;padding:6px;}
