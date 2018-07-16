@@ -1,9 +1,18 @@
 $(document).ready(function () {
 	loadKeys();
-	$('#createkey').click(function () {
-		$('#formId').attr('action', 'form3Create.html');
-		$('#formId').submit();
+
+	// Show Create Key Form
+	$('#createkey').click(function(){
+		$('#dv-main-page').hide();
+		$('#dv-create-key').show();
 	});
+
+	// Show Create Key Form
+	$('a.back').click(function(){
+		$('#dv-main-page').show();
+		$('#dv-create-key').hide();
+	});
+
 	$('#managekey').click(function () {
 		$('#formId').attr('action', 'form3.html?keydropdown=' + document.getElementById('dropdown1').value);
 		$('#formId').submit();
@@ -34,6 +43,8 @@ function loadKeys() {
 var o = {
 	channel: []
 };
+
+// Onload Event Listener
 window.onload = function(){
 	// Message Listener Event In Popup
 	// chrome.extension.onMessage.addListener(function(req, sender, sendResponse){
@@ -71,6 +82,7 @@ window.onload = function(){
 	// });
 };
 
+// Bind Channel With Html
 function bind_channel(){
 	document.getElementById('tbl-tbody-content').innerHTML = '';
 	var lst = o.channel.list;
@@ -84,12 +96,12 @@ function bind_channel(){
 			tr.appendChild(td_channel);
 
 			var td_channel_key = document.createElement('td');
-			td_channel_key.innerHTML = '<p></p>';
+			td_channel_key.innerHTML = '<p><select id="dropdown1" name="keydropdown"></select></p>';
 			tr.appendChild(td_channel_key);
 
 			var td_channel_button = document.createElement('td');
-			td_channel_button.innerHTML = '<p><button>Manage</button></p>';
-			tr.appendChild(td_channel_key);
+			td_channel_button.innerHTML = '<p><button type="button">Manage</button></p>';
+			tr.appendChild(td_channel_button);
 		}
 	}
 }

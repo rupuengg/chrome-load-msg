@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="../scripts/vendors/jquery-3.3.1.min.js"></script>
+		<script src ="./Feedback.js"></script>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<div class="maindiv">
+			<form id='formId' method = 'GET'>
+				<div class="back-home">
+					<a class="back" href="./popup.html"><img src='../images/back.png'/></a>
+					<a class="home" href="./popup.html"><img src='../images/home.png'/></a>
+				</div>
+				<h2>Encrypted Insights</h2>
+				<h3>Feedback/Contact Us</h3>
+
+				<div class="feedback-box">
+					<div class="form-box">
+						<label for="support">Reason</label>
+						<div class='form-field-box'>
+							<select id='support'>
+								<option value="Support">Support</option>
+							</select>
+						</div>
+					</div>
+					<div class="form-box">
+						<label for="subject">Subject</label>
+						<div class='form-field-box'>
+							<input id='subject' type="text" placeholder=" Subject"/>
+						</div>
+					</div>
+					<div class="form-box">
+						<label for="message">Message</label>
+						<div class="form-field-box">
+							<textarea id="message" rows="5" cols="30" placeholder="Your text here.."></textarea><br />
+						</div>
+					</div>
+					<div class="form-box">
+						<div class="form-field-box">
+							<button id='button1' name="Send" type="submit" value="Send">Send Communication</button>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

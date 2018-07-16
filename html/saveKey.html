@@ -1,0 +1,120 @@
+<html>
+
+<head>
+	<style>
+		body {
+			padding: 0px;
+			margin: 0px;
+			min-width: 500px;
+		}
+
+		#Container {
+			border: 2;
+			border: pink;
+			background-color: #78ada8;
+			height: 325px;
+			width: 500px;
+			border-radius: 12px;
+		}
+
+		#h1div {
+			font-size: 25px;
+			font-weight: bold;
+			text-align: center;
+			padding-top: 5%;
+		}
+
+		#firstdiv {
+			text-align: left;
+			padding-top: 5%;
+			padding-left: 2%;
+			font-weight: bold;
+		}
+
+		#h2div {
+			text-align: center;
+			font-size: 16px;
+			padding-top: 5%;
+		}
+
+		#checkbox1 {
+			padding-left: 30%;
+			border-radius: 4px;
+			height: 21px;
+		}
+
+		#keycheckbox {
+			height: 55%;
+		}
+
+		#text {
+			padding-left: 2%;
+		}
+
+		#message {
+			font-weight: bold;
+			padding-left: 20%;
+			font-size: 18px;
+			padding-top: 12%;
+		}
+
+		#buttons {
+			padding-left: 60%;
+			padding-top: 9%;
+			padding-bottom: 7%;
+		}
+
+		#cancelbutton {
+			border-radius: 6px;
+			height: 10%;
+			width: 45%;
+			background-color: #1a555e;
+			color: #fdfdfd;
+		}
+
+		#okbutton {
+			border-radius: 6px;
+			height: 10%;
+			width: 45%;
+			margin-left: 2%;
+			background-color: #1a555e;
+			color: #fdfdfd;
+		}
+
+		#smalltext1 {
+			width: 50%;
+			padding-left: 44%;
+		}
+
+		.inline {
+			display: inline-block;
+		}
+
+		.smalltext {
+			font-size: 13px;
+		}
+	</style>
+</head>
+
+<body>
+	<div id='Container'>
+		<div id='h1Div'>Generate Encryption Key</div>
+		<div id='firstdiv'>
+			<div id='h2Div' class='inline'>Choose Where to Save Key</div>
+			<div id='checkbox1' class='inline'>
+				<input type="checkbox" id='keycheckbox' name="key" value="keyvalid"> Yes
+				<br />
+			</div>
+		</div>
+		<div id='text' class='smalltext'>Automatically Saves to MyDocuments\EI\DontLookHere\</div>
+		<div id='message'>Generate Random Encryption Key</div>
+		<div id='smalltext1' class='smalltext'>Auto Saves to Default Vault</div>
+		<div id='buttons'>
+			<button id='cancelbutton' type="submit" value="Cancel">Cancel</button>
+			<button id='okbutton' name="Ok" type="submit" value="Ok">Ok</button>
+		</div>
+	</div>
+	<script src="form4.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="../scripts/vendors/jquery-3.3.1.min.js"></script>
+		<script src ="./popup.js"></script>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<div class="maindiv">
+			<form id='formId' method = 'GET'>
+				<h2>Encrypted Insights</h2>
+				<h3>Manage my Channels</h3>
+
+				<table class="channel-list" cellspacing=0 cellpadding=0>
+					<thead>
+						<tr>
+							<th><p>Channel</p></th>
+							<th><p>Key</p></th>
+							<th><p>Manage</p></th>
+						</tr>
+					</thead>
+					<tbody id="tbl-tbody-content">
+					</tbody>
+				</table>
+				<br/>
+				<div class="bottomdiv">
+					<a class="createkey" href="./createKey.html">Create New Key</a>
+				  <a class="feedbacklnk" href="./Feedback.html">Send Us Feedback</a>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>
