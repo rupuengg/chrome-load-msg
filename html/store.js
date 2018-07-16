@@ -30,7 +30,8 @@ function clear(){
   });
 }
 
-function add_key_data(key, data){
+// Store Data
+function add_key_data(key, data, callback){
   reterieve(key, function(res){
     var list = res[key];
     console.log('List', list);
@@ -42,6 +43,49 @@ function add_key_data(key, data){
     }
     console.log('Saved data', list);
     store({[key]: list}, function(){
+      callback();
+      reterieve(key, function(a){
+        console.log('saved data', a);
+      });
+    });
+  });
+}
+
+// This function is used to change default key for this channel_id with new key
+function change_default_key_for_channel(key, channel_id, new_key){
+  reterieve(key, function(res){
+    var list = res[key];
+    console.log('List', list);
+    if(list){
+      list = list.map(function(value){
+        if(value.channel_id == channel_id) value.default = value.key == new_key;
+        return value;
+      });
+    }
+    console.log('Saved data', list);
+    store({[key]: list}, function(){
+      reterieve(key, function(a){
+        console.log('saved data', a);
+      });
+    });
+  });
+}
+
+// This function is used to change default key for this channel_id with new key
+function delete_key_of_this_channel(key, channel_id, old_key, callback){
+  reterieve(key, function(res){
+    var list = res[key];
+    console.log('List', list);
+    if(list){
+      var pos = list.findIndex(function(value){
+        return value.key == old_key;
+      });
+
+      list.splice(pos, 1);
+    }
+    console.log('Saved data', list);
+    store({[key]: list}, function(){
+      callback();
       reterieve(key, function(a){
         console.log('saved data', a);
       });

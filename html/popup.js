@@ -32,6 +32,7 @@ function loadKeys() {
 var o = {
 	channel: {}
 };
+var default_key = "";
 
 // Onload Event Listener
 window.onload = function(){
@@ -65,6 +66,7 @@ window.onload = function(){
 
 					if(a.length > 0){
 						o.channel[channel_list.list[i]['id']] = {
+							id: channel_list.list[i]['id'],
 							title: channel_list.list[i]['title'],
 							keys: a
 						};
@@ -114,15 +116,19 @@ function bind_channel(){
 				for(var j=0;j<keys.length;j++){
 					var option = document.createElement('option');
 					option.setAttribute('value', keys[j].key);
-					if(keys[j].default) option.setAttribute('selected', true);
+					if(keys[j].default){
+						default_key = keys[j].key;
+						option.setAttribute('selected', true);
+					}
 					option.innerHTML = keys[j].alias;
 					td_channel_key_p_select.appendChild(option);
 				}
+				bind_event_with_dropdown(td_channel_key_p_select, lst.id);
 			}
 
 			// Manage Button
 			var td_channel_button = document.createElement('td');
-			td_channel_button.innerHTML = '<p><button type="button">Manage</button></p>';
+			td_channel_button.innerHTML = '<p><a class="action" href="./manageKey.html?channel_id=' + lst.id + '">Manage</a></p>';
 			tr.appendChild(td_channel_button);
 		}
 	}else{
@@ -135,4 +141,23 @@ function bind_channel(){
 		td_channel.innerHTML = '<p style="font-weight:normal !important;">No key associated to channels</p>';
 		tr.appendChild(td_channel);
 	}
+}
+
+// Bind Change Event With Dropdown
+function bind_event_with_dropdown(obj, channel_id){
+	obj.addEventListener('change', function(event){
+		// console.log(event.target.selectedIndex, event.target.selectedOptions[0].value);
+		if(confirm("The associated messages for this key have been lost. Do you want to change the associated key for this channel?")){
+			// This function is used to change default key for this channel_id with new key
+			change_default_key_for_channel('channel', channel_id, event.target.selectedOptions[0].value)
+		}else{
+			var options = obj.querySelectorAll('option');
+			for(var i=0;i<options.length;i++){
+				if(options[i].value == default_key)
+					options[i].setAttribute('selected', true);
+				else
+					options[i].removeAttribute('selected');
+			}
+		}
+	});
 }

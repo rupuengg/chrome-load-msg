@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<script src="../scripts/vendors/jquery-3.3.1.min.js"></script>
+		<script src="./store.js"></script>
+		<script src="./share.js"></script>
+		<link rel="stylesheet" href="./style.css" />
+	</head>
+	<body>
+		<div class="maindiv">
+			<form id="formId" method="get">
+				<div class="back-home">
+					<a class="back" href="./popup.html"><img src='../images/back.png'/></a>
+					<a class="home" href="./popup.html"><img src='../images/home.png'/></a>
+				</div>
+				<h2>Encrypted Insights</h2>
+				<h3>Share Key</h3>
+
+				<div class="feedback-box">
+					<div class="form-box">
+						<label for="keyinput">Channel</label>
+						<div class="form-field-box">
+							<select id="sel_channels" class="" name="">
+							</select>
+							<span class="error">Channel is mandatory.</span>
+						</div>
+					</div>
+					<div class="form-box">
+						<label for="keyinput">Keys</label>
+						<div class="form-field-box">
+							<select id="keyinput" class="" name="">
+							</select>
+						</div>
+					</div>
+					<div class="form-box">
+						<label for="shared_with">Shared With</label>
+						<div class="form-field-box">
+							<input id="shared_with" type="textbox" />
+						</div>
+					</div>
+					<div class="form-box">
+						<div class="form-field-box">
+							<!-- <button id='button1' type="button">Save Changes</button>&nbsp; -->
+							<button id='button2' type="button">Destroy this key</button>
+							&nbsp;&nbsp;
+							<button id='button1' type="button">Share</button>
+							<a class="feedbacklnk" href="./Feedback.html">Send Us Feedback</a>
+						</div>
+					</div>
+				</div>
+			</form>
+		</div>
+	</body>
+</html>

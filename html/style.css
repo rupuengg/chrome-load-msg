@@ -7,6 +7,7 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .channel-list thead th{background-color:#ccc;}
 .channel-list thead th p{padding:6px;}
 .channel-list tbody td p{padding:6px;}
+.channel-list tbody td p a.action{padding: 5px 10px;background-color: #1a555e;color: #ffffff;text-decoration: none;font-size: 12px;}
 .channel-list th{text-align:left;}
 .channel-list tr th:first-child{width:30%;}
 .channel-list tr td:first-child p{font-weight:bold !important;}
@@ -34,4 +35,4 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .feedback-box .form-box .form-field-box{display:block;}
 .feedback-box .form-box .form-field-box input,.feedback-box .form-box .form-field-box textarea,.feedback-box .form-box .form-field-box select{display:block;width:100%;padding:6px 0;}
 .feedback-box .form-box .form-field-box .error{display:none;color:red;font-size;12px;}
-#button1{height:10%;background-color: #1a555e;color: #fdfdfd;font-size:13px;border:0px;padding:6px;}
+#button1,#button2{height:10%;background-color: #1a555e;color: #fdfdfd;font-size:13px;border:0px;padding:6px;}

@@ -47,7 +47,7 @@ window.onload = function(){
 
 			console.log('Save Channel Key', store_data);
 			if(!document.getElementById('key_activate').checked){
-				add_key_data('channel', store_data);
+				add_key_data('channel', store_data, success_create_key);
 			}else{
 				var key = 'channel';
 				reterieve(key, function(res){
@@ -55,21 +55,24 @@ window.onload = function(){
 					if(list){
 				    console.log('List', list);
 						for(var i=0;i<list.length;i++){
-							list[i]['default'] = false;
+							if(list[i]['channel_id'] == store_data.channel_id) list[i]['default'] = false;
 						}
 				    console.log('Saved data', list);
 				    store({[key]: list}, function(){
-				      add_key_data('channel', store_data);
+				      add_key_data('channel', store_data, success_create_key);
 				    });
 					}else{
-						add_key_data('channel', store_data);
+						add_key_data('channel', store_data, success_create_key);
 					}
 			  });
 			}
-
 		}
 	});
 };
+
+function success_create_key(){
+	location.href = './popup.html';
+}
 
 // Bind Channel List To Dropdown
 function bind_channel_list(){
