@@ -66,7 +66,13 @@ window.onload = function(){
 
 // Key Create Successfull
 function success_create_key(){
-	location.href = './popup.html';
+	// Send Request To Background Js For Channel List
+	var req_params = {type: 'req', list: 'update'};
+	// console.log('Send Request From Popup To Background', req_params);
+	chrome.runtime.sendMessage(req_params, function(res){
+		console.log('Save New', res);
+		// location.href = './popup.html';
+	});
 }
 
 // Bind Channel List To Dropdown

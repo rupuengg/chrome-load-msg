@@ -5,18 +5,19 @@ var msg_container,
     msg_container_len=0,
     selector = 'div[role="listitem"]:not(.s-msg__decrypto)',
     sidebar_selector_for_channel = '.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="channel"],.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="private"]',
-    sidebar_selector_for_im = '.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="im"]';
+    sidebar_selector_for_im = '.client_channels_list_container .c-scrollbar__child a[data-qa-channel-sidebar-channel-type="im"]',
+    selected_channel_id,
+    channel_keys;
 
 // Fetch All Message List Items
-function fetch_all_messages_list(){
+function fetch_all_messages_list(key){
   // console.log('-----', 'Get Msg Container Div', msg_container);
 
   setInterval(function(){
     // console.log('Interval', msg_container_len, msg_container.querySelectorAll('div[role="listitem"]').length);
     if(fetchCryptEle('l') > 0 && fetchCryptEle('l') > msg_container_len){
       // console.log('Change');
-      process();
-      s.fetch_list();
+      process(key);
     }
     // var colls = msg_container.querySelectorAll('div[role="listitem"]');
     msg_container_len = fetchCryptEle('l');
@@ -24,14 +25,14 @@ function fetch_all_messages_list(){
 }
 
 // Process
-function process(){
+function process(key){
   var colls = fetchCryptEle('o');
   if(colls.length > 0){
     // chk_height = parseFloat(msg_container.firstChild.style.height);
     // console.log('-----', 'Fetch Message Items List', colls.length);
 
     for(var i=0;i<colls.length;i++){
-      decrypt_msg(colls[i]);
+      decrypt_msg(colls[i], key);
     }
   }
 }
@@ -58,84 +59,33 @@ function fetchCryptEle(type){
 // }
 
 // Decrypt Message
-function decrypt_msg(item){
+function decrypt_msg(item, key){
   var content = item.querySelectorAll('.c-message__content .c-message__body:not(.c-message__body--automated)');
   // console.log('-----', 'Message List Item Content', item, item.getAttribute('conv'), content.length);
   if(content.length > 0){
     var content = content[0];
 
     // content.innerHTML = secureMessage(content.innerHTML);
-    content.innerHTML = deSecureMessage(content.innerHTML);
+    content.innerHTML = deSecureMessage(content.innerHTML, key);
 
     // item.setAttribute('conv', '1');
     item.className += ' s-msg__decrypto';
   }
 }
 
-// Bind Click Event to Each Menu Items
-function bind_event_to_each_menu_item(){
-  // console.log('-----', 'Get Menu Items', menu_list);
-
-  for(var i=0;i<menu_list.length;i++){
-    var a = menu_list[i].querySelector('a');
-    if(a){
-      // console.log('-----', 'Bind Click Event to each Menu Item', menu_list[i], a)
-      a.addEventListener('click', function(){
-        // var interval2 = setInterval(function(){
-          // if(chk_height != parseFloat(msg_container.firstChild.style.height) && parseFloat(msg_container.firstChild.style.height) != 0 && chk_height != 0){
-            // console.log('-----', 'Click on Menu Items');
-            // clearInterval(interval2);
-            // console.log('Done', chk_height, parseFloat(msg_container.firstChild.style.height));
-            fetch_all_messages_list();
-          // }
-          // chk_height = parseFloat(msg_container.firstChild.style.height);
-          // console.log('sd', chk_height, parseFloat(msg_container.firstChild.style.height));
-        // }, 10);
-      });
-    }
-  }
-}
-
-// Setinterval for Message Item List
-var interval = setInterval(function(){
-  if(msg_container != null){
-    clearInterval(interval);
-    fetch_all_messages_list();
-
-    // var dv = msg_container.firstChild;
-    // if(window.addEventListener){
-    //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
-    // }else{
-    //   if(window.attachEvent){
-    //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
-    //   }
-    // }
-  }
-  msg_container = document.querySelector('#messages_container .c-scrollbar__child');
-}, 50);
-
-// Setinterval for Menu Item
-var interval1 = setInterval(function(){
-  if(menu_list != null){
-    clearInterval(interval1);
-    bind_event_to_each_menu_item();
-  }
-  menu_list = document.querySelectorAll('.client_channels_list_container div[role="listitem"]');
-}, 50);
-
 var s = {
-  all_list: [],
+  // all_list: [],
   channel_list: [],
   user_list: [],
   // Fetch All List
   fetch_list: function(){
-    s.all_list = [];
+    // s.all_list = [];
 
     // Fetch Channel List
-    s.fetch_channel_list(sidebar_selector_for_channel, 'c');
+    s.fetch_channel_list(sidebar_selector_for_channel, 'c', 1);
 
     // Fetch User List
-    s.fetch_channel_list(sidebar_selector_for_im, 'u', 1);
+    // s.fetch_channel_list(sidebar_selector_for_im, 'u', 1);
   },
   // Fetch All channel list
   fetch_channel_list: function(selector, type, is_send){
@@ -146,7 +96,7 @@ var s = {
     // console.log(list.length, list);
 
     if(type == 'c') s.channel_list = [];
-    if(type == 'u') s.user_list = [];
+    // if(type == 'u') s.user_list = [];
     for(var i=0;i<list.length;i++){
       var item = list[i];
 
@@ -157,13 +107,15 @@ var s = {
         type: type
       };
 
-      s.all_list.push(a);
+      if(a.selected) selected_channel_id = item.attributes['data-qa-channel-sidebar-channel-id'].nodeValue
+
+      // s.all_list.push(a);
       if(type == 'c') s.channel_list.push(a);
-      if(type == 'u') s.user_list.push(a);
+      // if(type == 'u') s.user_list.push(a);
     }
 
     if(is_send){
-      console.log('Send Channel List to Content Script', chrome);
+      console.log('Send Channel List to Content Script');
 
       // chrome.runtime.sendMessage(s.channel_list);
       if(s.channel_list.length > 0){
@@ -178,18 +130,99 @@ var s = {
   }
 };
 
-// chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
-//   alert('Hello2' + req.action);
-//   // chrome.runtime.sendMessage(req);
-// });
+// Bind Click Event to Each Menu Items
+function bind_event_to_each_menu_item(){
+  console.log('Get Menu Items', menu_list.length);
 
-// window.addEventListener('message', function(event){
-// 	// We only accept messages from ourselves
-// 	console.log('-----', 'Event', event);
-// 	if(event.source != window) return;
-//
-// 	if(event.data.type && (event.data.type == 'channel_and_user_list')){
-// 		console.log('-----', 'Data', event.data.list);
-// 		// port.postMessage(event.data.text);
-// 	}
-// }, false);
+  for(var i=0;i<menu_list.length;i++){
+    var a = menu_list[i];
+    if(a){
+      var attr = a.getAttribute('data-qa-channel-sidebar-channel-type');
+      if(['channel', 'private'].indexOf(attr) >= 0){
+        if(a.className.indexOf('p-channel_sidebar__channel--selected') >= 0){
+          selected_channel_id = a.getAttribute('data-qa-channel-sidebar-channel-id');
+        }
+
+        var channel_id = a.getAttribute('data-qa-channel-sidebar-channel-id');
+        a.addEventListener('click', function(event){
+          // console.log(event.target.parentElement);
+          selected_channel_id = event.target.parentElement.getAttribute('data-qa-channel-sidebar-channel-id');
+          var f = channel_keys.filter(function(v){
+  					return v.id == selected_channel_id;
+  				});
+          console.log('Click', channel_keys, selected_channel_id, f);
+          if(f.length > 0){
+            // var interval2 = setInterval(function(){
+              // if(chk_height != parseFloat(msg_container.firstChild.style.height) && parseFloat(msg_container.firstChild.style.height) != 0 && chk_height != 0){
+                // console.log('-----', 'Click on Menu Items');
+                // clearInterval(interval2);
+                // console.log('Done', chk_height, parseFloat(msg_container.firstChild.style.height));
+                fetch_all_messages_list(f[0].key);
+              // }
+              // chk_height = parseFloat(msg_container.firstChild.style.height);
+              // console.log('sd', chk_height, parseFloat(msg_container.firstChild.style.height));
+            // }, 10);
+          }
+        });
+      }
+    }
+  }
+}
+
+// Fetch All Channels
+function _fetch_channel(callback){
+  console.log('Fetch Channels');
+  var t_channel = setInterval(function(){
+    if(menu_list){
+      if(menu_list.length > 0){
+        clearInterval(t_channel);
+
+        // Bind Click Event On Each Channel
+        bind_event_to_each_menu_item();
+
+        callback();
+      }
+    }
+    menu_list = document.querySelectorAll('.client_channels_list_container div[role="listitem"] a.p-channel_sidebar__channel');
+  }, 50);
+}
+
+// Window Event Listener
+window.addEventListener('load', function(){
+  // Fetch All Channels
+  _fetch_channel(function(){
+    channel_keys = JSON.parse(document.getElementById('final_channel_keys').innerHTML);
+    console.log('Channel And Key', channel_keys);
+    // Fetch All Message Items
+    var t_message = setInterval(function(){
+      if(msg_container != null){
+        clearInterval(t_message);
+
+        var f = channel_keys.filter(function(v){
+          return v.id == selected_channel_id;
+        });
+        console.log('Load Message Encrypt', f, selected_channel_id);
+        s.fetch_list();
+        if(f.length > 0){
+          fetch_all_messages_list(f[0].key);
+        }
+
+        // var dv = msg_container.firstChild;
+        // if(window.addEventListener){
+        //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
+        // }else{
+        //   if(window.attachEvent){
+        //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
+        //   }
+        // }
+      }
+      msg_container = document.querySelector('#messages_container .c-scrollbar__child');
+    }, 50);
+  });
+
+
+
+  // console.log(document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected'));
+  // selected_channel_id = document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected').attributes['data-qa-channel-sidebar-channel-id'].nodeValue
+  // console.log('Window onload event', selected_channel_id, channel_keys);
+});

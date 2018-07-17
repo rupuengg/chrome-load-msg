@@ -1,6 +1,6 @@
 // Encrypt Message
-function secureMessage(msg){
-  var inputString = msg;
+function secureMessage(msg, pass_key){
+  var inputString = msg + pass_key;
   var outputString = '';
   var asciiArr = new Array();
   var atozArr = new Array();
@@ -35,10 +35,10 @@ function secureMessage(msg){
 }
 
 // Decrypt Message
-function deSecureMessage(encryptMsg){
+function deSecureMessage(encryptMsg, pass_key){
   var plainText = '';
   if(encryptMsg != 0){
-    var encryptedString = encryptMsg;
+    var encryptedString = encryptMsg.replace(pass_key, '');
     var key = encryptedString[encryptedString.length - 1];
     var decryptedString = new Array();
     for(i = 0; i < encryptedString.length - 1; i++){

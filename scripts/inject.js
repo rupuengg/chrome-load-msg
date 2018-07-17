@@ -33,37 +33,61 @@ window.addEventListener("message", function(event){
   }
 });
 
-// chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
-//   pass_data.tab = req.tab;
-//   console.log("Background Request", req, 'Send Response', pass_data);
-//   sendResponse(pass_data);
-//   // chrome.runtime.sendMessage(req);
-// });
+var aaa = window.location.host.split('.');
+var k = 'channel-list-' + aaa[0];
+var final_channel_keys = [];
 
+// Fetch Channel And Respective Active Key
+function update_on_dom(){
+  chrome.storage.sync.get(k, function(arr){
+    var channel_list = arr[k].list;
+    console.log('Fetch Channels', channel_list);
+    chrome.storage.sync.get('channel', function(res){
+      var keys = res['channel'];
+      console.log('Keys', keys);
+
+      final_channel_keys = [];
+      for(var i=0;i<channel_list.length;i++){
+        for(var j=0;j<keys.length;j++){
+          if(channel_list[i].id == keys[j].channel_id && keys[j].default){
+            final_channel_keys.push(Object.assign(channel_list[i], keys[j]));
+          }
+        }
+      }
+      final_channel_keys = JSON.stringify(final_channel_keys);
+      console.log('Final', final_channel_keys);
+
+      bind_channel_and_key(final_channel_keys);
+    });
+  });
+}
+
+// Extension Message Event Listener
 chrome.extension.onMessage.addListener(function(req, sender, sendResponse){
-  pass_data.tab = req.tab;
-  console.log("Background Request", req, 'Send Response', pass_data);
-  sendResponse(pass_data);
+  if(req.type == 'req' && req.list == 'channel'){
+    pass_data.tab = req.tab;
+    console.log("Background Request", req, 'Send Response', pass_data);
+    sendResponse(pass_data);
+  }else if(req.type == 'req' && req.list == 'update'){
+    update_on_dom();
+    sendResponse({msg: 'Save'});
+  }
 });
 
-// chrome.runtime.sendMessage('Hello world');
+// Bind Channel and Key to DOM
+function bind_channel_and_key(str){
+  if(document.getElementById('final_channel_keys')){
+    document.getElementById('final_channel_keys').innerHTML = str;
+  }else{
+    var d = document.createElement('span')
+    d.setAttribute('id', 'final_channel_keys');
+    d.setAttribute('style', 'display:none;');
+    d.innerHTML = str;
+    document.body.appendChild(d);
+  }
+}
 
-// console.log('--------R--', chrome);
-// console.log('--------R--', chrome.runtime);
-// chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
-//   console.log(req, sender, sendResponse);
-//   if(req.action == 'channel'){
-//     sendResponse(s.channel_list);
-//   }
-// });
-
-// console.log(chrome);
-
-
-// var port = chrome.runtime.connect({name: 'knockknock'});
-// port.postMessage({joke: 'KnockKnock'});
-// console.log(port);
-//
-// port.onMessage.addListener(function(msg){
-//   console.log(msg);
-// });
+// Window Load Event Listener
+window.addEventListener('load', function(){
+  update_on_dom();
+});
