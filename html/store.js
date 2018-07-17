@@ -1,3 +1,9 @@
+// Find Store Key
+function find_store_key(str){
+  var a = str.split('.');
+  return 'channel-list-' + a[0];
+}
+
 // This Function Is Used To Store Data on Chrome Storage
 function store(data, callback){
   // Request To Store Data
@@ -59,6 +65,7 @@ function change_default_key_for_channel(key, channel_id, new_key){
     if(list){
       list = list.map(function(value){
         if(value.channel_id == channel_id) value.default = value.key == new_key;
+        if(value.channel_id == channel_id) value.activate_date = value.key == new_key ? Date.now() : '';
         return value;
       });
     }
@@ -86,9 +93,9 @@ function delete_key_of_this_channel(key, channel_id, old_key, callback){
     console.log('Saved data', list);
     store({[key]: list}, function(){
       callback();
-      reterieve(key, function(a){
-        console.log('saved data', a);
-      });
+      // reterieve(key, function(a){
+      //   console.log('saved data', a);
+      // });
     });
   });
 }

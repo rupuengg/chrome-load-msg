@@ -1,6 +1,6 @@
 html,body{min-width:500px;margin:0px;padding:0px;background-color:#78ada8;border:1px solid #91a09f;font-size:13px;}
 h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
-.maindiv{padding:20px;min-height:350px;}
+.maindiv{padding:20px;min-height:350px;position:relative;}
 .maindiv > form > h2{display:block;text-align:center;font-size:20px;font-weight:bold;height:30px;}
 .maindiv > form > h3{display:block;text-align:center;font-size:14px;font-weight:normal;margin-bottom:10px;}
 .channel-list{width:100%;background-color:#fff;padding:10px;}
@@ -36,3 +36,8 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .feedback-box .form-box .form-field-box input,.feedback-box .form-box .form-field-box textarea,.feedback-box .form-box .form-field-box select{display:block;width:100%;padding:6px 0;}
 .feedback-box .form-box .form-field-box .error{display:none;color:red;font-size;12px;}
 #button1,#button2{height:10%;background-color: #1a555e;color: #fdfdfd;font-size:13px;border:0px;padding:6px;}
+
+.maindiv .alert{position:fixed;bottom:20px;left:20px;}
+.maindiv .alert span{font-size:12px;font-weight:bold;display:none;}
+.maindiv .alert span.error{color:red;display:block;}
+.maindiv .alert span.success{color:green;display:block;}

@@ -1,3 +1,4 @@
+// Is Used To Add script on DOM
 function addScript(src){
   var script = document.createElement('script');
   script.setAttribute('type', 'text/javascript');
@@ -12,10 +13,13 @@ addScript(chrome.extension.getURL('scripts/loadAllMsgs.js'));
 addScript(chrome.extension.getURL('scripts/crypto.js'));
 
 var pass_data = '';
+
+// Message Event Listener To Fetch Message From DOM
 window.addEventListener("message", function(event){
   // We only accept messages from ourselves
   if(event.source != window) return;
 
+  // Return If No Message Get
   if(event.origin.indexOf(".slack.com") > 0 && event.data == "") return;
 
   console.log('Load All Msg Recieve Msg', event);
@@ -36,7 +40,8 @@ window.addEventListener("message", function(event){
 //   // chrome.runtime.sendMessage(req);
 // });
 
-chrome.extension.onMessage.addListener(function(req, sender, sendResponse) {
+chrome.extension.onMessage.addListener(function(req, sender, sendResponse){
+  pass_data.tab = req.tab;
   console.log("Background Request", req, 'Send Response', pass_data);
   sendResponse(pass_data);
 });

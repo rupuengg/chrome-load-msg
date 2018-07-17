@@ -1,5 +1,6 @@
 'use strict';
 
+// Data
 var pass_data = {
   active_tab: ''
 };
@@ -47,6 +48,7 @@ chrome.runtime.onMessage.addListener(function(req, sender, sendResponse){
     var tab = tabs[0];
     console.log('Active tabs', tab);
 
+    req.tab = tab.id;
     console.log('Send Request From background to Content Script', tab.id, req);
     chrome.tabs.sendMessage(tab.id, req, function(res){
       pass_data = res;

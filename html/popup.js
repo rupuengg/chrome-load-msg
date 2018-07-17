@@ -39,6 +39,42 @@ window.onload = function(){
 	// Clear All
 	// clear();
 
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+		var aa = tabs[0].url.split('/');
+		var current_tab_host = aa[2];
+		console.log('Active tabs', current_tab_host);
+
+		// Fetch All Generated Keys
+		var k = find_store_key(current_tab_host);
+		reterieve(k, function(arr){
+			var channel_list = arr[k];
+			if(channel_list){
+				console.log('Channel lists', channel_list);
+				reterieve('channel', function(res){
+					console.log('generated keys', res);
+
+					if(res['channel']){
+						for(var i=0;i<channel_list.list.length;i++){
+							var a = res['channel'].filter(function(value){
+								return value.channel_id === channel_list.list[i]['id'];
+							});
+
+							if(a.length > 0){
+								o.channel[channel_list.list[i]['id']] = {
+									id: channel_list.list[i]['id'],
+									title: channel_list.list[i]['title'],
+									keys: a
+								};
+							}
+						}
+					}
+					console.log('Final Res', o.channel);
+					bind_channel();
+				});
+			}else bind_channel();
+		});
+	});
+
 	// Send Request To Background Js For Channel List
 	// var req_params = {type: 'req', list: 'channel', 'origin': ''};
 	// console.log('Send Request From Popup To Background', req_params);
@@ -50,33 +86,6 @@ window.onload = function(){
 	// 		// bind_channel();
 	// 	}
 	// });
-
-	// Fetch All Generated Keys
-	reterieve('channel-list', function(arr){
-		var channel_list = arr['channel-list'];
-		console.log('Channel lists', channel_list);
-		reterieve('channel', function(res){
-			console.log('generated keys', res);
-
-			if(res['channel']){
-				for(var i=0;i<channel_list.list.length;i++){
-					var a = res['channel'].filter(function(value){
-						return value.channel_id === channel_list.list[i]['id'];
-					});
-
-					if(a.length > 0){
-						o.channel[channel_list.list[i]['id']] = {
-							id: channel_list.list[i]['id'],
-							title: channel_list.list[i]['title'],
-							keys: a
-						};
-					}
-				}
-			}
-			console.log('Final Res', o.channel);
-			bind_channel();
-		});
-	});
 };
 
 // Bind Channel With Html

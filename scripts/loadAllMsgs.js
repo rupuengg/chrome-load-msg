@@ -169,7 +169,8 @@ var s = {
       if(s.channel_list.length > 0){
         window.postMessage({
           type: 'channel',
-          list: s.channel_list
+          list: s.channel_list,
+          host: window.location.host
         }, "*");
       }
     }

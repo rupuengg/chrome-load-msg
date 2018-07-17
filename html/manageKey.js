@@ -11,40 +11,26 @@ var o = {
 	channel: [],
 	keys: []
 };
-var a, channel_id;
+var a, channel_id, current_tab_host;
 
 // Onload Event Listener
 window.onload = function(){
 	a = location.search.split("?channel_id=");
 	channel_id = a[1];
 
-	fetch_channel_and_respective_keys();
-
-	// // Send Request To Background Js For Channel List
-	// var req_params = {type: 'req', list: 'channel', 'origin': ''};
-	// // console.log('Send Request From Popup To Background', req_params);
-	// chrome.runtime.sendMessage(req_params, function(res){
-	// 	// console.log('Send Request From Popup To Background Response', res);
-	// 	if(res){
-	// 		o.channel = res;
-	//
-	// 		// Save Channel List
-	// 		store({'channel-list': res});
-	//
-	// 		// Bind Channels
-	// 		bind_channel_list();
-	//
-	// 		// Bind Generated Key
-	// 		generateRandomKey();
-	// 	}
-	// });
+	chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+		var aa = tabs[0].url.split('/');
+		current_tab_host = aa[2];
+		console.log('Active tabs', current_tab_host);
+		fetch_channel_and_respective_keys();
+	});
 
 	// Share Keys
 	document.getElementById('button1').addEventListener('click', function(){
 		location.href = './share.html?channel_id=' + channel_id;
 	});
 
-	// Generate New Key Event
+	// Delete Key Event
 	document.getElementById('button2').addEventListener('click', function(){
 		var o_key;
 		for(var i=0;i<o.keys.length;i++){
@@ -60,19 +46,26 @@ window.onload = function(){
 			// console.log(event.target.selectedIndex, event.target.selectedOptions[0].value);
 			if(confirm("The associated messages for this key have been lost. Do you want to delete the associated key for this channel?")){
 				// This function is used to change default key for this channel_id with new key
-				delete_key_of_this_channel('channel', channel_id, document.getElementById('keyinput').value, fetch_channel_and_respective_keys);
+				delete_key_of_this_channel('channel', channel_id, document.getElementById('keyinput').value, function(){
+					showMsg('success', 'Key has been destroy');
+					fetch_channel_and_respective_keys();
+				}());
 			}
 		}else{
 			// This function is used to change default key for this channel_id with new key
-			delete_key_of_this_channel('channel', channel_id, document.getElementById('keyinput').value, fetch_channel_and_respective_keys);
+			delete_key_of_this_channel('channel', channel_id, document.getElementById('keyinput').value, function(){
+				showMsg('success', 'Key has been destroy');
+				fetch_channel_and_respective_keys();
+			}());
 		}
 	});
 };
 
 // Fetch Channels And Respective Keys
 function fetch_channel_and_respective_keys(){
-	reterieve('channel-list', function(arr){
-		var channel_list = arr['channel-list'];
+	var k = find_store_key(current_tab_host);
+	reterieve(k, function(arr){
+		var channel_list = arr[k];
 
 		o.channel = channel_list;
 
@@ -139,14 +132,3 @@ function bind_channel_keys(){
 		}
 	}
 }
-
-// Bind Change Event With Dropdown
-// function bind_event_with_dropdown(obj, channel_id){
-// 	obj.addEventListener('change', function(event){
-// 		// console.log(event.target.selectedIndex, event.target.selectedOptions[0].value);
-// 		if(confirm("The associated messages for this key have been lost. Do you want to change the associated key for this channel?")){
-// 			// This function is used to change default key for this channel_id with new key
-// 			change_default_key_for_channel('channel', channel_id, event.target.selectedOptions[0].value)
-// 		}
-// 	});
-// }

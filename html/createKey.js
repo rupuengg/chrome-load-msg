@@ -1,12 +1,3 @@
-function getUrlParameter(name) {
-	debugger;
-
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
-
 var o = {
 	channel: []
 };
@@ -22,7 +13,7 @@ window.onload = function(){
 			o.channel = res;
 
 			// Save Channel List
-			store({'channel-list': res});
+			store({[find_store_key(res.host)]: res});
 
 			// Bind Channels
 			bind_channel_list();
@@ -44,6 +35,9 @@ window.onload = function(){
 				default: document.getElementById('key_activate').checked,
 				shared_with: document.getElementById('shared_with').value
 			};
+
+			if(document.getElementById('key_activate').checked)
+				store_data['activate_date'] = Date.now();
 
 			console.log('Save Channel Key', store_data);
 			if(!document.getElementById('key_activate').checked){
@@ -70,6 +64,7 @@ window.onload = function(){
 	});
 };
 
+// Key Create Successfull
 function success_create_key(){
 	location.href = './popup.html';
 }
