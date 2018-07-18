@@ -183,22 +183,21 @@ FormData.prototype.append = function (k, v) {
     if (ivx.fm.message && k === 'text') {
         ivx.fm.message =  false;
         var text = ivx.conv(v, ivx.mapto);
-        return this._append(k, secureMessage(text));
+        
+        var f = channel_keys.filter(function(v){
+          return v.id == selected_channel_id;
+        });
+
+        var msg;
+        if(f.length > 0) msg = secureMessage(text, f[0].key);
+        else msg = text;
+
+        console.log('-------------Message Send', channel_keys, selected_channel_id, text, f[0].key, msg);
+
+        return this._append(k, msg);
     }
     return this._append(k, v);
 };
 if(!window.document.domain.match(/slack.com$/)) {
     ivx.cfgParse = false;
-}
-
-function secureMessage(msg)
-{
-    var encryptedAES = (msg + "a657s65da5sd");
-    return encryptedAES;
-}
-
-function deSecureMessage(encryptMsg)
-{
-    var plaintext = encryptMsg.replace("a657s65da5sd","");
-    return plaintext;
 }

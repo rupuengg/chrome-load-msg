@@ -41,3 +41,16 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .maindiv .alert span{font-size:12px;font-weight:bold;display:none;}
 .maindiv .alert span.error{color:red;display:block;}
 .maindiv .alert span.success{color:green;display:block;}
+
+#popup {display: none;}
+#popup,#popup>.background {position: absolute;height: 100%;width: 100%;top: 0px;left: 0px;}
+#popup>.popupcontainer {position: absolute;padding: 5%;	width: 40%;	height: 25%;background-color: lightgray;left: 25%;top: 25%;}
+#popup>.background {background-color: black;opacity: 0.6;}
+#progressbar {padding-bottom: 20px;}
+#progressbar,#progressbar>div {width: 100%;}
+@-webkit-keyframes animate-stripes {100% {background-position: -100px 0px;}	}
+@keyframes animate-stripes {100% {background-position: -100px 0px;}}
+#progressbar,#progressbar>div,#progressbar>div>div {height: 22px;}
+#progressbar>div {background-color: gray;border: 1px solid #000;border-radius: 2px;box-shadow: 0 2px 5px rgba(0, 0, 0, 0.25) inset;}
+#progressbar>div>div {max-width: 100%;min-width: 0%;background: linear-gradient(to bottom, #7db9e8 21%, #2989d8 57%, #207cca 66%, #1e5799 90%);transition: 0.4s linear;transition-property: width, background-color;}
+#popup button {padding: 2% 10%;}

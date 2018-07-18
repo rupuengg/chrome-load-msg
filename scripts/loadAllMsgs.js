@@ -61,10 +61,10 @@ function fetchCryptEle(type){
 // Decrypt Message
 function decrypt_msg(item, key){
   var content = item.querySelectorAll('.c-message__content .c-message__body:not(.c-message__body--automated)');
-  // console.log('-----', 'Message List Item Content', item, item.getAttribute('conv'), content.length);
   if(content.length > 0){
     var content = content[0];
 
+    console.log('-----', 'Message Decrypt', content.innerHTML, key);
     // content.innerHTML = secureMessage(content.innerHTML);
     content.innerHTML = deSecureMessage(content.innerHTML, key);
 
