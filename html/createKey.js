@@ -133,35 +133,35 @@ function hide(obj){
 
 //////
 
-document.getElementById("okbutton").addEventListener("click", function () {
-    document.getElementById("popup").style.display = 'block';
-    reportProgress();
-});
-
-document.getElementById("popUlOK").addEventListener("click", function () {
-    window.location.href = 'popup.html';
-});
-
-document.addEventListener('DOMContentLoaded', function () {
-    loadKeysAndSetSelecte();
-}, false);
-
-document.addEventListener('DOMContentLoaded', function () {
-    console.log('document is ready. I can sleep now');
-});
-
-function reportProgress(a) {
-    var width = 1;
-    var id = setInterval(frame, 40);
-    function frame() {
-        if (width >= 100) {
-            document.getElementById("progressbar").style.display = 'none';
-            document.getElementById("title").style.display = 'none';
-            document.getElementById("progressbarCompleted").style.display = 'block';
-            clearInterval(id);
-        } else {
-            width = width + 1;
-            document.getElementById("progress").style.width = width + '%';
-        }
-    }
-};
+// document.getElementById("okbutton").addEventListener("click", function () {
+//     document.getElementById("popup").style.display = 'block';
+//     reportProgress();
+// });
+//
+// document.getElementById("popUlOK").addEventListener("click", function () {
+//     window.location.href = 'popup.html';
+// });
+//
+// document.addEventListener('DOMContentLoaded', function () {
+//     loadKeysAndSetSelecte();
+// }, false);
+//
+// document.addEventListener('DOMContentLoaded', function () {
+//     console.log('document is ready. I can sleep now');
+// });
+//
+// function reportProgress(a) {
+//     var width = 1;
+//     var id = setInterval(frame, 40);
+//     function frame() {
+//         if (width >= 100) {
+//             document.getElementById("progressbar").style.display = 'none';
+//             document.getElementById("title").style.display = 'none';
+//             document.getElementById("progressbarCompleted").style.display = 'block';
+//             clearInterval(id);
+//         } else {
+//             width = width + 1;
+//             document.getElementById("progress").style.width = width + '%';
+//         }
+//     }
+// };

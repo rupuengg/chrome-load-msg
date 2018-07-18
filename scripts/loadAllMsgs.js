@@ -11,7 +11,7 @@ var msg_container,
 
 // Fetch All Message List Items
 function fetch_all_messages_list(key){
-  // console.log('-----', 'Get Msg Container Div', msg_container);
+  console.log('-----', 'Get Msg Container Div', msg_container);
 
   setInterval(function(){
     // console.log('Interval', msg_container_len, msg_container.querySelectorAll('div[role="listitem"]').length);
@@ -66,7 +66,8 @@ function decrypt_msg(item, key){
 
     console.log('-----', 'Message Decrypt', content.innerHTML, key);
     // content.innerHTML = secureMessage(content.innerHTML);
-    content.innerHTML = deSecureMessage(content.innerHTML, key);
+    if(key) content.innerHTML = deSecureMessage(content.innerHTML, key);
+    else content.innerHTML = content.innerHTML;
 
     // item.setAttribute('conv', '1');
     item.className += ' s-msg__decrypto';
@@ -191,33 +192,55 @@ function _fetch_channel(callback){
 window.addEventListener('load', function(){
   // Fetch All Channels
   _fetch_channel(function(){
-    channel_keys = JSON.parse(document.getElementById('final_channel_keys').innerHTML);
-    console.log('Channel And Key', channel_keys);
-    // Fetch All Message Items
-    var t_message = setInterval(function(){
-      if(msg_container != null){
-        clearInterval(t_message);
+    if(document.getElementById('final_channel_keys')){
+      var str = document.getElementById('final_channel_keys').innerHTML;
+      channel_keys = JSON.parse(str);
+      console.log('Channel And Key', channel_keys);
+      // Fetch All Message Items
+      var t_message = setInterval(function(){
+        if(msg_container != null){
+          clearInterval(t_message);
 
-        var f = channel_keys.filter(function(v){
-          return v.id == selected_channel_id;
-        });
-        console.log('Load Message Encrypt', f, selected_channel_id);
-        s.fetch_list();
-        if(f.length > 0){
-          fetch_all_messages_list(f[0].key);
+          var f = channel_keys.filter(function(v){
+            return v.id == selected_channel_id;
+          });
+          console.log('Load Message Encrypt', f, selected_channel_id);
+          s.fetch_list();
+          if(f.length > 0){
+            fetch_all_messages_list(f[0].key);
+          }
+
+          // var dv = msg_container.firstChild;
+          // if(window.addEventListener){
+          //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
+          // }else{
+          //   if(window.attachEvent){
+          //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
+          //   }
+          // }
         }
+        msg_container = document.querySelector('#messages_container .c-scrollbar__child');
+      }, 50);
+    }else{
+      var t_message = setInterval(function(){
+        if(msg_container != null){
+          clearInterval(t_message);
+          console.log('Load Message Encrypt', selected_channel_id);
+          s.fetch_list();
+          fetch_all_messages_list("");
 
-        // var dv = msg_container.firstChild;
-        // if(window.addEventListener){
-        //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
-        // }else{
-        //   if(window.attachEvent){
-        //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
-        //   }
-        // }
-      }
-      msg_container = document.querySelector('#messages_container .c-scrollbar__child');
-    }, 50);
+          // var dv = msg_container.firstChild;
+          // if(window.addEventListener){
+          //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
+          // }else{
+          //   if(window.attachEvent){
+          //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
+          //   }
+          // }
+        }
+        msg_container = document.querySelector('#messages_container .c-scrollbar__child');
+      }, 50);
+    }
   });
 
 

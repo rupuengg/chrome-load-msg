@@ -40,25 +40,29 @@ var final_channel_keys = [];
 // Fetch Channel And Respective Active Key
 function update_on_dom(){
   chrome.storage.sync.get(k, function(arr){
-    var channel_list = arr[k].list;
-    console.log('Fetch Channels', channel_list);
-    chrome.storage.sync.get('channel', function(res){
-      var keys = res['channel'];
-      console.log('Keys', keys);
+    if(arr[k]){
+      var channel_list = arr[k].list;
+      console.log('Fetch Channels', channel_list);
+      chrome.storage.sync.get('channel', function(res){
+        var keys = res['channel'];
+        console.log('Keys', keys);
 
-      final_channel_keys = [];
-      for(var i=0;i<channel_list.length;i++){
-        for(var j=0;j<keys.length;j++){
-          if(channel_list[i].id == keys[j].channel_id && keys[j].default){
-            final_channel_keys.push(Object.assign(channel_list[i], keys[j]));
+        final_channel_keys = [];
+        if(channel_list){
+          for(var i=0;i<channel_list.length;i++){
+            for(var j=0;j<keys.length;j++){
+              if(channel_list[i].id == keys[j].channel_id && keys[j].default){
+                final_channel_keys.push(Object.assign(channel_list[i], keys[j]));
+              }
+            }
           }
         }
-      }
-      final_channel_keys = JSON.stringify(final_channel_keys);
-      console.log('Final', final_channel_keys);
+        final_channel_keys = JSON.stringify(final_channel_keys);
+        console.log('Final', final_channel_keys);
 
-      bind_channel_and_key(final_channel_keys);
-    });
+        bind_channel_and_key(final_channel_keys);
+      });
+    }
   });
 }
 
