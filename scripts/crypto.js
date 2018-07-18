@@ -1,6 +1,6 @@
 // Encrypt Message
 function secureMessage(msg, pass_key){
-  return msg + pass_key;
+  return pass_key + msg;
 }
 
 // Decrypt Message

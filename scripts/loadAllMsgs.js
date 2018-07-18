@@ -11,7 +11,7 @@ var msg_container,
 
 // Fetch All Message List Items
 function fetch_all_messages_list(key){
-  console.log('-----', 'Get Msg Container Div', msg_container);
+  // console.log('-----', 'Get Msg Container Div', msg_container);
 
   setInterval(function(){
     // console.log('Interval', msg_container_len, msg_container.querySelectorAll('div[role="listitem"]').length);
@@ -21,7 +21,7 @@ function fetch_all_messages_list(key){
     }
     // var colls = msg_container.querySelectorAll('div[role="listitem"]');
     msg_container_len = fetchCryptEle('l');
-  }, 100);
+  }, 10);
 }
 
 // Process
@@ -188,64 +188,96 @@ function _fetch_channel(callback){
   }, 50);
 }
 
+// // Window Event Listener
+// window.addEventListener('load', function(){
+//   // Fetch All Channels
+//   _fetch_channel(function(){
+//     if(document.getElementById('final_channel_keys')){
+//       var str = document.getElementById('final_channel_keys').innerHTML;
+//       channel_keys = JSON.parse(str);
+//       console.log('Channel And Key', channel_keys);
+//       // Fetch All Message Items
+//       var t_message = setInterval(function(){
+//         if(msg_container != null){
+//           clearInterval(t_message);
+//
+//           var f = channel_keys.filter(function(v){
+//             return v.id == selected_channel_id;
+//           });
+//           console.log('Load Message Encrypt', f, selected_channel_id);
+//           s.fetch_list();
+//           if(f.length > 0){
+//             fetch_all_messages_list(f[0].key);
+//           }
+//
+//           // var dv = msg_container.firstChild;
+//           // if(window.addEventListener){
+//           //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
+//           // }else{
+//           //   if(window.attachEvent){
+//           //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
+//           //   }
+//           // }
+//         }
+//         msg_container = document.querySelector('#messages_container .c-scrollbar__child');
+//       }, 50);
+//     }else{
+//       var t_message = setInterval(function(){
+//         if(msg_container != null){
+//           clearInterval(t_message);
+//           console.log('Load Message Encrypt', selected_channel_id);
+//           s.fetch_list();
+//           fetch_all_messages_list("");
+//
+//           // var dv = msg_container.firstChild;
+//           // if(window.addEventListener){
+//           //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
+//           // }else{
+//           //   if(window.attachEvent){
+//           //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
+//           //   }
+//           // }
+//         }
+//         msg_container = document.querySelector('#messages_container .c-scrollbar__child');
+//       }, 50);
+//     }
+//   });
+//
+//
+//
+//   // console.log(document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected'));
+//   // selected_channel_id = document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected').attributes['data-qa-channel-sidebar-channel-id'].nodeValue
+//   // console.log('Window onload event', selected_channel_id, channel_keys);
+// });
+
 // Window Event Listener
 window.addEventListener('load', function(){
   // Fetch All Channels
   _fetch_channel(function(){
-    if(document.getElementById('final_channel_keys')){
-      var str = document.getElementById('final_channel_keys').innerHTML;
-      channel_keys = JSON.parse(str);
-      console.log('Channel And Key', channel_keys);
-      // Fetch All Message Items
-      var t_message = setInterval(function(){
-        if(msg_container != null){
-          clearInterval(t_message);
+    var t_message = setInterval(function(){
+      if(msg_container != null){
+        clearInterval(t_message);
 
+        // Fetch Channels List
+        s.fetch_list();
+
+        // Fetch All Message Items
+        var pass_key = "";
+        if(document.getElementById('final_channel_keys')){
+          var str = document.getElementById('final_channel_keys').innerHTML;
+          channel_keys = JSON.parse(str);
+          console.log('Channel And Key', channel_keys);
           var f = channel_keys.filter(function(v){
             return v.id == selected_channel_id;
           });
+          pass_key = f[0].key;
           console.log('Load Message Encrypt', f, selected_channel_id);
-          s.fetch_list();
-          if(f.length > 0){
-            fetch_all_messages_list(f[0].key);
-          }
-
-          // var dv = msg_container.firstChild;
-          // if(window.addEventListener){
-          //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
-          // }else{
-          //   if(window.attachEvent){
-          //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
-          //   }
-          // }
         }
-        msg_container = document.querySelector('#messages_container .c-scrollbar__child');
-      }, 50);
-    }else{
-      var t_message = setInterval(function(){
-        if(msg_container != null){
-          clearInterval(t_message);
-          console.log('Load Message Encrypt', selected_channel_id);
-          s.fetch_list();
-          fetch_all_messages_list("");
 
-          // var dv = msg_container.firstChild;
-          // if(window.addEventListener){
-          //   dv.addEventListener('DOMSubtreeModified', scrollEvent, false);
-          // }else{
-          //   if(window.attachEvent){
-          //     dv.attachEvent('DOMSubtreeModified', scrollEvent);
-          //   }
-          // }
-        }
-        msg_container = document.querySelector('#messages_container .c-scrollbar__child');
-      }, 50);
-    }
+        // Fetch All Messages And Decrypt
+        fetch_all_messages_list(pass_key);
+      }
+      msg_container = document.querySelector('#messages_container .c-scrollbar__child');
+    }, 50);
   });
-
-
-
-  // console.log(document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected'));
-  // selected_channel_id = document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected').attributes['data-qa-channel-sidebar-channel-id'].nodeValue
-  // console.log('Window onload event', selected_channel_id, channel_keys);
 });
