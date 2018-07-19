@@ -99,3 +99,14 @@ function delete_key_of_this_channel(key, channel_id, old_key, callback){
     });
   });
 }
+
+// Fetch Current Tab Host
+function fetch_current_tab_host(callback){
+  chrome.tabs.query({active: true, currentWindow: true}, function(tabs){
+		var aa = tabs[0].url.split('/');
+		current_tab_host = aa[2];
+
+    var k = find_store_key(current_tab_host);
+    callback(k);
+  });
+}

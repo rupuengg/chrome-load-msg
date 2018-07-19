@@ -1,102 +1,124 @@
-function getUrlParameter(name) {
-	debugger;
+var a, channel_id, register_listeners;
 
-  name = name.replace(/[\[]/, '\\[').replace(/[\]]/, '\\]');
-  var regex = new RegExp('[\\?&]' + name + '=([^&#]*)');
-  var results = regex.exec(location.search);
-  return results === null ? '' : decodeURIComponent(results[1].replace(/\+/g, ' '));
-};
+// Share Pass keys
+function share_pass_key_to_emails(){
+	if(config.emails.length > 0){
+		log('Share Pass keys to emails', config.emails);
 
-var o = {
-	channel: [],
-	keys: []
-};
-var a, channel_id;
+		// Do code for sharing emails....
+		// ..............................
+		// ..............................
+		// Do code for sharing emails....
+	}
+}
 
-// Onload Event Listener
-window.onload = function(){
-	a = location.search.split("?channel_id=");
-	channel_id = a[1];
+// Add Email Address
+function add_email_address(){
+	var email = document.getElementById('shared_with').value;
+	if(email.trim() != ''){
+		log('Email', email);
 
-	fetch_channels();
+		// Check email already exists
+		var index = config.emails.findIndex(function(v){
+			return v == email;
+		});
 
-	// Change Channel
-	document.getElementById('sel_channels').addEventListener('change', function(){
-		// Fetch Keys Respective Channel
-		fetch_keys_respective_channel(event.target.selectedOptions[0].value);
-	});
-
-	// Share Keys
-	document.getElementById('button1').addEventListener('click', function(){
-		location.href = './share.html';
-	});
-
-	// Generate New Key Event
-	document.getElementById('button2').addEventListener('click', function(){
-		var o_key;
-		for(var i=0;i<o.keys.length;i++){
-			console.log('Match', o.keys[i].key, document.getElementById('keyinput').value);
-			if(o.keys[i].key == document.getElementById('keyinput').value && o.keys[i].default){
-				o_key = o.keys[i];
-				break;
-			}
+		if(index >= 0){
+			log('Email exists');
+			return;
 		}
-		console.log('Delete', o_key);
 
-		if(o_key){
-			// console.log(event.target.selectedIndex, event.target.selectedOptions[0].value);
-			if(confirm("The associated messages for this key have been lost. Do you want to delete the associated key for this channel?")){
-				// This function is used to change default key for this channel_id with new key
-				delete_key_of_this_channel('channel', channel_id, document.getElementById('keyinput').value, fetch_channels);
-			}
-		}else{
-			// This function is used to change default key for this channel_id with new key
-			delete_key_of_this_channel('channel', channel_id, document.getElementById('keyinput').value, fetch_channels);
+		// Push Email in List
+		config.emails.push(email);
+
+		// Render emails
+		render_emails();
+	}
+}
+
+// Render emails
+function render_emails(){
+	log('Email List', config.emails);
+	document.getElementById('user-eml-list').innerHTML = '';
+	if(config.emails.length > 0){
+		for(var i=0;i<config.emails.length;i++){
+			var li = document.createElement('li');
+			document.getElementById('user-eml-list').appendChild(li);
+
+			var spanTxt = document.createElement('span');
+			spanTxt.innerHTML = config.emails[i];
+			li.appendChild(spanTxt);
+
+			var spanClose = document.createElement('span');
+			spanClose.setAttribute('class', 'close')
+			spanClose.setAttribute('index', i)
+			spanClose.innerHTML = 'X';
+
+			// Close Event
+			spanClose.addEventListener('click', function(e){
+				log('Close event', e.target.getAttribute('index'));
+
+				config.emails.splice(e.target.getAttribute('index'), 1);
+
+				render_emails();
+			});
+
+			li.appendChild(spanClose);
 		}
-	});
-};
+	}else{
+		var li = document.createElement('li');
+		document.getElementById('user-eml-list').appendChild(li);
+		li.innerHTML = "No email found.";
+	}
+}
 
-// Fetch Channels And Respective Keys
-function fetch_channels(){
-	reterieve('channel-list', function(arr){
-		var channel_list = arr['channel-list'];
+// Bind Channel Keys To Dropdown
+function bind_channel_keys(){
+	log('Bind Channel Keys');
+	document.getElementById('keyinput').innerHTML = '';
 
-		o.channel = channel_list;
+	var option = document.createElement('option');
+	option.setAttribute('value', '');
+	option.innerHTML = 'Select key';
+	document.getElementById('keyinput').appendChild(option);
 
-		// Bind Channels
-		bind_channel_list(channel_id);
-
-		// Fetch Keys Respective Channel
-		fetch_keys_respective_channel(channel_id);
-	});
+	var lst = config.keys;
+	if(lst){
+		for(var i=0;i<lst.length;i++){
+			var option = document.createElement('option');
+			option.setAttribute('value', lst[i].key);
+			if(lst[i].default) option.setAttribute('selected', true);
+			option.innerHTML = lst[i].alias;
+			document.getElementById('keyinput').appendChild(option);
+		}
+	}
 }
 
 // Fetch Keys Respective Channel
 function fetch_keys_respective_channel(channel_id){
 	// Fetch Channel Keys
-	reterieve('channel', function(res){
-		console.log('generated keys', res);
-		if(res['channel']){
-			var a = res['channel'].filter(function(value){
-				return value.channel_id === channel_id;
+	reterieve(config.channel_keys_key, function(res){
+		log('Generated keys', res);
+		config.keys = [];
+		if(res[config.channel_keys_key]){
+			var a = res[config.channel_keys_key].filter(function(value){
+				return value.channel_id == channel_id;
 			});
 
 			if(a.length > 0){
-				o.keys = a;
+				config.keys = a;
 			}
 		}
-		console.log('Final Res', o);
+		log('Final Res', config);
 
 		bind_channel_keys();
-
-		// bind_event_with_dropdown(document.getElementById('keyinput'), channel_id);
 	});
 }
 
 // Bind Channel List To Dropdown
 function bind_channel_list(channel_id){
 	document.getElementById('sel_channels').innerHTML = '';
-	var lst = o.channel.list;
+	var lst = config.channels.list;
 	if(lst){
 		var option = document.createElement('option');
 		option.setAttribute('value', '');
@@ -110,36 +132,89 @@ function bind_channel_list(channel_id){
 			option.innerHTML = lst[i].title;
 			document.getElementById('sel_channels').appendChild(option);
 		}
+
+		// Change Channel Event
+		document.getElementById('sel_channels').addEventListener('change', function(){
+			// Fetch Keys Respective Channel
+			fetch_keys_respective_channel(event.target.selectedOptions[0].value);
+		});
 	}
 }
 
-// Bind Channel Keys To Dropdown
-function bind_channel_keys(){
-	document.getElementById('keyinput').innerHTML = '';
-	var lst = o.keys;
-	if(lst){
-		var option = document.createElement('option');
-		option.setAttribute('value', '');
-		option.innerHTML = 'Select key';
-		document.getElementById('keyinput').appendChild(option);
+// Fetch Channels And Respective Keys
+function fetch_channels(){
+	fetch_current_tab_host(function(k){
+		log('Active tabs host key', k);
 
-		for(var i=0;i<lst.length;i++){
-			var option = document.createElement('option');
-			option.setAttribute('value', lst[i].key);
-			if(lst[i].default) option.setAttribute('selected', true);
-			option.innerHTML = lst[i].alias;
-			document.getElementById('keyinput').appendChild(option);
+		reterieve(k, function(arr){
+			log('Fetch Channel List', arr);
+			if(arr[k]){
+				var channel_list = arr[k];
+
+				config.channels = channel_list;
+
+				// Bind Channels
+				bind_channel_list(channel_id);
+
+				// Fetch Keys Respective Channel
+				fetch_keys_respective_channel(channel_id);
+			}
+		});
+	});
+}
+
+// Onload Event Listener
+window.onload = function(){
+	a = location.search.split("?channel_id=");
+	channel_id = a[1];
+
+	fetch_channels();
+
+	// Add Email Event Fire
+	document.getElementById('btnAdd').addEventListener('click', function(event){
+		register_listeners.push({
+			'el': document.getElementById('btnAdd'),
+			'event': 'click'
+		});
+
+		add_email_address();
+	});
+
+	// Cancel Event
+	document.getElementById('btnCancel').addEventListener('click', function(event){
+		register_listeners.push({
+			'el': document.getElementById('btnCancel'),
+			'event': 'click'
+		});
+
+		window.history.back();
+	});
+
+	// Add email address on enter key
+	document.getElementById('shared_with').addEventListener('keypress', function(event){
+		event.preventDefault();
+
+		register_listeners.push({
+			'el': document.getElementById('shared_with'),
+			'event': 'keypress'
+		});
+
+		log("Enter key press", event.keyCode);
+		if(event.keyCode === 13){
+			add_email_address();
 		}
-	}
-}
+		return false;
+	});
 
-// Bind Change Event With Dropdown
-// function bind_event_with_dropdown(obj, channel_id){
-// 	obj.addEventListener('change', function(event){
-// 		// console.log(event.target.selectedIndex, event.target.selectedOptions[0].value);
-// 		if(confirm("The associated messages for this key have been lost. Do you want to change the associated key for this channel?")){
-// 			// This function is used to change default key for this channel_id with new key
-// 			change_default_key_for_channel('channel', channel_id, event.target.selectedOptions[0].value)
-// 		}
-// 	});
-// }
+	// Add email address on enter key
+	document.getElementById('btnSend').addEventListener('keypress', function(event){
+		share_pass_key_to_emails()
+	});
+};
+
+// Remove Event Listener
+window.unload = function(){
+	for(var i=0;i<register_listeners.length;i++){
+		register_listeners['el'].removeEventListener(register_listeners['event']);
+	}
+};

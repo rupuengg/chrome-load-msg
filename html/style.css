@@ -13,6 +13,17 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .channel-list tr td:first-child p{font-weight:bold !important;}
 .channel-list tr th:last-child{width:20%;}
 
+.user-eml-list{display:block;background:#ffffff;padding:10px;height:114px;overflow:hidden;overflow-y:auto;}
+.user-eml-list ul{display:block;}
+.user-eml-list ul li{display:inline-block;padding:4px 10px;border-bottom:1px solid #cccccc;margin:0 6px 6px 0;background:#78ada8;border-radius:10px;}
+.user-eml-list ul li span.close{margin-left:8px;color:#ffffff;font-weight:bold;cursor:pointer;}
+
+.brd{border:1px solid #cccccc;}
+.brd-t{border:0px;border-top:1px solid #cccccc;}
+.brd-r{border:0px;border-right:1px solid #cccccc;}
+.brd-b{border:0px;border-bottom:1px solid #cccccc;}
+.brd-l{border:0px;border-left:1px solid #cccccc;}
+
 .bottomdiv{height:50px;}
 .feedbacklnk{float:right;}
 .createkey{background-color:#1a555e;color:#fdfdfd;text-decoration:none;padding:6px 10px;}
@@ -29,13 +40,16 @@ h1,h2,h3,p,ul,li{margin:0px;padding:0px;}
 .back-home img{width:30px;height:30px;margin-right:10px;}
 
 .feedback-box{display:block;margin:20px 0 0 0;}
+.feedback-box .dv100{float:left;width:100%;}
+.feedback-box .dv50{float:left;width:49%;}
+.feedback-box .clear{clear:both;}
 .feedback-box .form-box{display:block;margin-bottom:10px;}
 .feedback-box .form-box:last-child{margin-bottom:0px;}
 .feedback-box .form-box label{display:block;padding: 0 0 3px 0;font-size: 13px;}
 .feedback-box .form-box .form-field-box{display:block;}
 .feedback-box .form-box .form-field-box input,.feedback-box .form-box .form-field-box textarea,.feedback-box .form-box .form-field-box select{display:block;width:100%;padding:6px 0;}
 .feedback-box .form-box .form-field-box .error{display:none;color:red;font-size;12px;}
-#button1,#button2{height:10%;background-color: #1a555e;color: #fdfdfd;font-size:13px;border:0px;padding:6px;}
+#button1,#button2,.sbtButton{height:10%;background-color: #1a555e;color: #fdfdfd;font-size:13px;border:0px;padding:6px;}
 
 .maindiv .alert{position:fixed;bottom:20px;left:20px;}
 .maindiv .alert span{font-size:12px;font-weight:bold;display:none;}

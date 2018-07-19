@@ -1,4 +1,4 @@
-// console.log('-----', 'Start Load Message Script');
+// log('-----', 'Start Load Message Script');
 var msg_container,
     menu_list = null,
     chk_height,
@@ -9,14 +9,27 @@ var msg_container,
     selected_channel_id,
     channel_keys;
 
+// Console log
+function log(msg){
+  var args = log.arguments;
+  if(ivx.cfgDebug) console.log(
+    (args[0] ? args[0] : ''),
+    (args[1] ? args[1] : ''),
+    (args[2] ? args[2] : ''),
+    (args[3] ? args[3] : ''),
+    (args[4] ? args[4] : ''),
+    (args[5] ? args[5] : ''),
+    (args[6] ? args[6] : ''));
+}
+
 // Fetch All Message List Items
 function fetch_all_messages_list(key){
-  // console.log('-----', 'Get Msg Container Div', msg_container);
+  // log('-----', 'Get Msg Container Div', msg_container);
 
   setInterval(function(){
-    // console.log('Interval', msg_container_len, msg_container.querySelectorAll('div[role="listitem"]').length);
+    // log('Interval', msg_container_len, msg_container.querySelectorAll('div[role="listitem"]').length);
     if(fetchCryptEle('l') > 0 && fetchCryptEle('l') > msg_container_len){
-      // console.log('Change');
+      log('Change');
       process(key);
     }
     // var colls = msg_container.querySelectorAll('div[role="listitem"]');
@@ -27,14 +40,14 @@ function fetch_all_messages_list(key){
 // Process
 function process(key){
   var colls = fetchCryptEle('o');
-  if(colls.length > 0){
+  // if(colls.length > 0){
     // chk_height = parseFloat(msg_container.firstChild.style.height);
-    // console.log('-----', 'Fetch Message Items List', colls.length);
+    // log('-----', 'Fetch Message Items List', colls.length);
 
     for(var i=0;i<colls.length;i++){
       decrypt_msg(colls[i], key);
     }
-  }
+  // }
 }
 
 // fetch all crypt element
@@ -45,10 +58,10 @@ function fetchCryptEle(type){
 
 // Scroll
 // function scrollEvent(){
-//   console.log('scroll');
+//   log('scroll');
 //   if(msg_container.querySelectorAll('div[role="listitem"]').length > msg_container_len){
 //     // var t = setInterval(function(){
-//       console.log(msg_container.querySelectorAll('div[role="listitem"]').length, '>', msg_container_len);
+//       log(msg_container.querySelectorAll('div[role="listitem"]').length, '>', msg_container_len);
 //       if(msg_container.querySelectorAll('div[role="listitem"]').length > msg_container_len){
 //         msg_container_len = msg_container.querySelectorAll('div[role="listitem"]').length;
 //         // clearInterval(t);
@@ -64,7 +77,7 @@ function decrypt_msg(item, key){
   if(content.length > 0){
     var content = content[0];
 
-    console.log('-----', 'Message Decrypt', content.innerHTML, key);
+    log('-----', 'Message Decrypt', content.innerHTML, key);
     // content.innerHTML = secureMessage(content.innerHTML);
     if(key) content.innerHTML = deSecureMessage(content.innerHTML, key);
     else content.innerHTML = content.innerHTML;
@@ -92,9 +105,9 @@ var s = {
   fetch_channel_list: function(selector, type, is_send){
     if(!is_send) var is_send = 0;
 
-    // console.log('Start');
+    // log('Start');
     var list = document.querySelectorAll(selector);
-    // console.log(list.length, list);
+    // log(list.length, list);
 
     if(type == 'c') s.channel_list = [];
     // if(type == 'u') s.user_list = [];
@@ -116,7 +129,7 @@ var s = {
     }
 
     if(is_send){
-      console.log('Send Channel List to Content Script');
+      log('Send Channel List to Content Script');
 
       // chrome.runtime.sendMessage(s.channel_list);
       if(s.channel_list.length > 0){
@@ -127,13 +140,13 @@ var s = {
         }, "*");
       }
     }
-    // console.log(s);
+    // log(s);
   }
 };
 
 // Bind Click Event to Each Menu Items
 function bind_event_to_each_menu_item(){
-  console.log('Get Menu Items', menu_list.length);
+  log('Get Menu Items', menu_list.length);
 
   for(var i=0;i<menu_list.length;i++){
     var a = menu_list[i];
@@ -146,22 +159,22 @@ function bind_event_to_each_menu_item(){
 
         var channel_id = a.getAttribute('data-qa-channel-sidebar-channel-id');
         a.addEventListener('click', function(event){
-          // console.log(event.target.parentElement);
+          // log(event.target.parentElement);
           selected_channel_id = event.target.parentElement.getAttribute('data-qa-channel-sidebar-channel-id');
           var f = channel_keys.filter(function(v){
   					return v.id == selected_channel_id;
   				});
-          console.log('Click', channel_keys, selected_channel_id, f);
+          log('Click', channel_keys, selected_channel_id, f);
           if(f.length > 0){
             // var interval2 = setInterval(function(){
               // if(chk_height != parseFloat(msg_container.firstChild.style.height) && parseFloat(msg_container.firstChild.style.height) != 0 && chk_height != 0){
-                // console.log('-----', 'Click on Menu Items');
+                // log('-----', 'Click on Menu Items');
                 // clearInterval(interval2);
-                // console.log('Done', chk_height, parseFloat(msg_container.firstChild.style.height));
+                // log('Done', chk_height, parseFloat(msg_container.firstChild.style.height));
                 fetch_all_messages_list(f[0].key);
               // }
               // chk_height = parseFloat(msg_container.firstChild.style.height);
-              // console.log('sd', chk_height, parseFloat(msg_container.firstChild.style.height));
+              // log('sd', chk_height, parseFloat(msg_container.firstChild.style.height));
             // }, 10);
           }
         });
@@ -172,7 +185,7 @@ function bind_event_to_each_menu_item(){
 
 // Fetch All Channels
 function _fetch_channel(callback){
-  console.log('Fetch Channels');
+  log('Fetch Channels');
   var t_channel = setInterval(function(){
     if(menu_list){
       if(menu_list.length > 0){
@@ -195,7 +208,7 @@ function _fetch_channel(callback){
 //     if(document.getElementById('final_channel_keys')){
 //       var str = document.getElementById('final_channel_keys').innerHTML;
 //       channel_keys = JSON.parse(str);
-//       console.log('Channel And Key', channel_keys);
+//       log('Channel And Key', channel_keys);
 //       // Fetch All Message Items
 //       var t_message = setInterval(function(){
 //         if(msg_container != null){
@@ -204,7 +217,7 @@ function _fetch_channel(callback){
 //           var f = channel_keys.filter(function(v){
 //             return v.id == selected_channel_id;
 //           });
-//           console.log('Load Message Encrypt', f, selected_channel_id);
+//           log('Load Message Encrypt', f, selected_channel_id);
 //           s.fetch_list();
 //           if(f.length > 0){
 //             fetch_all_messages_list(f[0].key);
@@ -225,7 +238,7 @@ function _fetch_channel(callback){
 //       var t_message = setInterval(function(){
 //         if(msg_container != null){
 //           clearInterval(t_message);
-//           console.log('Load Message Encrypt', selected_channel_id);
+//           log('Load Message Encrypt', selected_channel_id);
 //           s.fetch_list();
 //           fetch_all_messages_list("");
 //
@@ -245,9 +258,9 @@ function _fetch_channel(callback){
 //
 //
 //
-//   // console.log(document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected'));
+//   // log(document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected'));
 //   // selected_channel_id = document.querySelector(selector).querySelector('.p-channel_sidebar__channel.p-channel_sidebar__channel--selected').attributes['data-qa-channel-sidebar-channel-id'].nodeValue
-//   // console.log('Window onload event', selected_channel_id, channel_keys);
+//   // log('Window onload event', selected_channel_id, channel_keys);
 // });
 
 // Window Event Listener
@@ -266,12 +279,12 @@ window.addEventListener('load', function(){
         if(document.getElementById('final_channel_keys')){
           var str = document.getElementById('final_channel_keys').innerHTML;
           channel_keys = JSON.parse(str);
-          console.log('Channel And Key', channel_keys);
+          log('Channel And Key', channel_keys);
           var f = channel_keys.filter(function(v){
             return v.id == selected_channel_id;
           });
           pass_key = f[0].key;
-          console.log('Load Message Encrypt', f, selected_channel_id);
+          log('Load Message Encrypt', f, selected_channel_id);
         }
 
         // Fetch All Messages And Decrypt

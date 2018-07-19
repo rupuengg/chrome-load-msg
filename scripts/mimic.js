@@ -177,13 +177,16 @@ FormData.prototype.append = function (k, v) {
     if (ivx.cfgDebug) {
        console.log('FormData.append: k: ', k, ' v: ', v);
     }
-    if (k === 'type' && v === 'message') {
+    if ((k === 'type' || k === 'text') && v === 'message') {
+        ivx.fm.message =  true;
+    }
+    if(k === 'text' && v != ''){
         ivx.fm.message =  true;
     }
     if (ivx.fm.message && k === 'text') {
         ivx.fm.message =  false;
         var text = ivx.conv(v, ivx.mapto);
-        
+
         var f = channel_keys.filter(function(v){
           return v.id == selected_channel_id;
         });
@@ -192,7 +195,9 @@ FormData.prototype.append = function (k, v) {
         if(f.length > 0) msg = secureMessage(text, f[0].key);
         else msg = text;
 
-        console.log('-------------Message Send', channel_keys, selected_channel_id, text, f[0].key, msg);
+        if(ivx.cfgDebug){
+          console.log('-------------Message Send', channel_keys, selected_channel_id, text, f[0].key, msg);
+        }
 
         return this._append(k, msg);
     }
