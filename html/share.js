@@ -1,4 +1,4 @@
-var a, channel_id, register_listeners;
+var channel_id, register_listeners;
 
 // Share Pass keys
 function share_pass_key_to_emails(){
@@ -165,9 +165,11 @@ function fetch_channels(){
 
 // Onload Event Listener
 window.onload = function(){
-	a = location.search.split("?channel_id=");
+	// Get query string parameters
+	var a = location.search.split("?channel_id=");
 	channel_id = a[1];
 
+	// Fetch channels
 	fetch_channels();
 
 	// Add Email Event Fire
