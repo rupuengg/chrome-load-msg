@@ -165,6 +165,8 @@ function fetch_channels(){
 
 // Onload Event Listener
 window.onload = function(){
+	register_listeners = [];
+
 	// Get query string parameters
 	var a = location.search.split("?channel_id=");
 	channel_id = a[1];
@@ -173,43 +175,32 @@ window.onload = function(){
 	fetch_channels();
 
 	// Add Email Event Fire
+	register_listeners.push({'el': document.getElementById('btnAdd'), 'event': 'click'});
 	document.getElementById('btnAdd').addEventListener('click', function(event){
-		register_listeners.push({
-			'el': document.getElementById('btnAdd'),
-			'event': 'click'
-		});
-
 		add_email_address();
 	});
 
 	// Cancel Event
+	register_listeners.push({'el': document.getElementById('btnCancel'), 'event': 'click'});
 	document.getElementById('btnCancel').addEventListener('click', function(event){
-		register_listeners.push({
-			'el': document.getElementById('btnCancel'),
-			'event': 'click'
-		});
-
 		window.history.back();
 	});
 
 	// Add email address on enter key
+
+	register_listeners.push({'el': document.getElementById('shared_with'), 'event': 'keypress'});
 	document.getElementById('shared_with').addEventListener('keypress', function(event){
-		event.preventDefault();
-
-		register_listeners.push({
-			'el': document.getElementById('shared_with'),
-			'event': 'keypress'
-		});
-
 		log("Enter key press", event.keyCode);
 		if(event.keyCode === 13){
+			event.preventDefault();
+
 			add_email_address();
 		}
-		return false;
 	});
 
 	// Add email address on enter key
-	document.getElementById('btnSend').addEventListener('keypress', function(event){
+	register_listeners.push({'el': document.getElementById('btnSend'), 'event': 'click'});
+	document.getElementById('btnSend').addEventListener('click', function(event){
 		share_pass_key_to_emails()
 	});
 };
